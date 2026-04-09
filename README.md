@@ -1,0 +1,1 @@
+# Azure SignalR Example in Multi-tenancy system
