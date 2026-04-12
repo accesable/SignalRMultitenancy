@@ -7,8 +7,9 @@ public class NotificationHub : Hub
     public override Task OnConnectedAsync()
     {
         var httpContext = Context.GetHttpContext();
-        var resourceId = httpContext!.Request.Query["resourceId"];
-        var userId = httpContext!.Request.Query["userId"];
+        var resourceId = Context.User?.FindFirst("resourceId")?.Value;
+        var userId = Context.User?.FindFirst("userId")?.Value;
+
         var connectionId = Context.ConnectionId;
 
         Context.Items["resourceId"] = resourceId;

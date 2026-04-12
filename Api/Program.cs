@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Api;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -7,7 +8,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddSignalR().AddAzureSignalR();
+builder.Services.AddSignalR().AddAzureSignalR(options =>
+{
+    options.ClaimsProvider = context =>
+    [
+        // embed whatever you need into the token claims
+        new Claim("resourceId", context.Request.Headers["X-Tenant-Id"].ToString()),
+        new Claim("userId",context.Request.Headers["X-User-Id"].ToString()),
+    ];
+});
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddCors(options =>

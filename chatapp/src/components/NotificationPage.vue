@@ -16,7 +16,12 @@ const userId = uuidv4();
 console.log(`Connection initialized resource ID: ${resourceId} and user ID: ${userId}`);
 
 const connection = new HubConnectionBuilder()
-    .withUrl(`${API_BASE}/hubs/notifications?resourceId=${resourceId}&userId=${userId}`)
+    .withUrl(`${API_BASE}/hubs/notifications`, {
+        headers: {
+            "X-Tenant-Id" : `${resourceId}`,
+            "X-User-Id" : `${userId}`
+        },
+    })
     .build();
 
 const fetchUsers = async () => {
